@@ -5,6 +5,7 @@ Keep in mind that i am working on improving and developing new plugins within th
 
 ## Table of contents
 - [check_dht.py](#check_dht.py)
+- [check_synology.py](#check_synology.py)
 
 ### check_dht.py
 This plugin will read the temperature and humidity values from your sensor (dht11, dht22, 3202) and return it in readable format for tools like icinga oder nagios including perfdata for visualization.
@@ -15,7 +16,6 @@ Example ```Check_Command``` for use with ```icinga2```:
 ```
 object CheckCommand "check_dht" {
   command = ["/usr/bin/sudo", "/usr/bin/python", PluginDir + "/check_dht.py" ]
-
   arguments = {
     "--model" = {
        skip_key = true
@@ -34,3 +34,7 @@ object CheckCommand "check_dht" {
   }
 }
 ```
+### check_dht.py
+Keep in mind: This plugin is not released yet.
+
+This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install pysnmp```
