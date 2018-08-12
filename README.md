@@ -1,6 +1,8 @@
 # monitoring-plugins
 In this repository i will get together all check plugins i wrote by myself or i found usefull which are not included in the default ```monitoring-plugins``` you can install via ```apt```.
 
+Keep in mind that i am working on improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my scripts
+
 ## Table of contents
 - [check_dht.py](#check_dht.py)
 
