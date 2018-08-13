@@ -9,7 +9,7 @@ parser.add_argument("hostname", help="the hostname", type=str)
 parser.add_argument("username", help="the snmp user name", type=str)
 parser.add_argument("authkey", help="the auth key", type=str)
 parser.add_argument("privkey", help="the priv key", type=str)
-parser.add_argument("mode", help="the mode", type=str)
+parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 args = parser.parse_args()
@@ -41,9 +41,8 @@ def snmpget(oid):
                             errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
     else:
         for varBind in varBinds:
+            #answer = (' = '.join([x.prettyPrint() for x in varBind]))
             print(' = '.join([x.prettyPrint() for x in varBind]))
-#            answer = (' = '.join([x.prettyPrint() for x in varBind]))
-
             return x.prettyPrint()
 
 if mode == 'load':
@@ -60,3 +59,41 @@ if mode == 'memory':
 
     print state + ' - {:0.1f}% '.format(memory_percent) + 'free ({0:0.1f} MB out of {1:0.1f} MB)'.format((memory_unused / 1024), (memory_total / 1024)), '|memory_total=%dc' % memory_total, 'memory_unused=%dc' % memory_unused , 'memory_percent=%d' % memory_percent + '%'
 
+if mode == 'disk':
+    maxDisk = 0
+    for i in range(0, 64, 1):
+        disk = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
+        if disk.startswith("No Such Instance"):
+            break
+        maxDisk = maxDisk + 1
+    for i in range(0, maxDisk, 1):
+        disk = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
+        disk_status_nr = snmpget('1.3.6.1.4.1.6574.2.1.1.5.' + str(i))
+        disk_temp = snmpget('1.3.6.1.4.1.6574.2.1.1.6.' + str(i))
+        status_translation = {
+            '1': "Normal",
+            '2': "Initialized",
+            '3': "NotInitialized",
+            '4': "SystemPartitionFailed",
+            '5': "Crashed"
+        }
+        disk_status = status_translation.get(disk_status_nr)
+
+        #missing perfdata
+        print state + ' - %s: Status: %s, Temperature: %s C' % (disk, disk_status, disk_temp)
+
+if mode == 'storage':
+    for i in range(1,256,1):
+        storage_name = snmpget('1.3.6.1.2.1.25.2.3.1.3.' + str(i))
+        if storage_name.startswith("/volume"):
+            allocation_units = snmpget('1.3.6.1.2.1.25.2.3.1.4.' + str(i))
+            size = snmpget('1.3.6.1.2.1.25.2.3.1.5.' + str(i))
+            used = snmpget('1.3.6.1.2.1.25.2.3.1.6.' + str(i))
+
+            storage_size = int((int(allocation_units) * int(size)) / 1000000000)
+            storage_used = int((int(used) * int(allocation_units)) / 1000000000)
+            storage_free = int(storage_size - storage_used)
+            storage_used_percent = int(storage_used * 100 / storage_size)
+
+            #missing perfdata
+            print state + ' - free space: %s %s GB (%s GB von %s GB belegt, %s' % (storage_name, storage_free, storage_used, storage_size, storage_used_percent) + '%)'
