@@ -38,3 +38,40 @@ object CheckCommand "check_dht" {
 Keep in mind: This plugin is not released yet.
 
 This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install pysnmp```
+
+Example ```CheckCommand``` for use with ```icinga2```:
+```
+object CheckCommand "check_synology" {
+  command = ["/usr/bin/python", PluginDir + "/check_synology.py" ]
+
+  arguments = {
+    "--host" = {
+       skip_key = true
+       order = 0
+       value = "$synology_host$"
+    }
+    "--username" = {
+       skip_key = true
+       order = 1
+       value = "$synology_snmp_user$"
+    }
+    "--authkey" = {
+       skip_key = true
+       order = 2
+       value = "$synology_snmp_authkey$"
+    }
+    "--privkey" = {
+       skip_key = true
+       order = 3
+       value = "$synology_snmp_privkey$"
+    }
+    "--mode" = {
+       skip_key = true
+       order = 4
+       value = "$synology_mode$"
+    }
+    "-w" = "$synology_warning$"
+    "-c" = "$synology_critical$"
+  }
+}
+```
