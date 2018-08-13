@@ -1,7 +1,7 @@
 # monitoring-plugins
 In this repository i will get together all check plugins i wrote by myself or i found usefull which are not included in the default ```monitoring-plugins``` you can install via ```apt```.
 
-Keep in mind that i am working on improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my scripts
+Keep in mind that i am working on, improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my plugins
 
 ## Table of contents
 - [check_dht.py](#check_dht.py)
@@ -12,7 +12,7 @@ This plugin will read the temperature and humidity values from your sensor (dht1
 
 This check plugin needs the adafruit dht library available on: https://github.com/adafruit/Adafruit_Python_DHT.git
 
-Example ```Check_Command``` for use with ```icinga2```:
+Example ```CheckCommand``` for use with ```icinga2```:
 ```
 object CheckCommand "check_dht" {
   command = ["/usr/bin/sudo", "/usr/bin/python", PluginDir + "/check_dht.py" ]
@@ -34,7 +34,7 @@ object CheckCommand "check_dht" {
   }
 }
 ```
-### check_dht.py
+### check_synology.py
 Keep in mind: This plugin is not released yet.
 
 This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install pysnmp```
