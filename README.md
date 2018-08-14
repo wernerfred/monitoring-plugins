@@ -1,5 +1,5 @@
 # monitoring-plugins
-In this repository i will get together all check plugins i wrote by myself or i found usefull which are not included in the default ```monitoring-plugins``` you can install via ```apt```.
+In this repository i will get together all check plugins i wrote by myself or i found usefull which are not included in the default ```monitoring-plugins``` you can install via ```apt```. All check plugins will return their results in a readable format for tools like nagios or icinga including perfdata for visualization with tools like grafana or pnp 
 
 Keep in mind that i am working on, improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my plugins
 
@@ -8,7 +8,7 @@ Keep in mind that i am working on, improving and developing new plugins within t
 - [check_synology.py](#check_synology.py)
 
 ### check_dht.py
-This plugin will read the temperature and humidity values from your sensor (dht11, dht22, 3202) and return it in readable format for tools like icinga oder nagios including perfdata for visualization.
+This plugin will read the temperature and humidity values from your sensor (dht11, dht22, 3202).
 
 This check plugin needs the adafruit dht library available on: https://github.com/adafruit/Adafruit_Python_DHT.git
 
@@ -43,12 +43,13 @@ This check plugin needs ```pysnmp``` to be installed on your system. You can ins
 
 Available modes:
 
-| mode    | description                                                |
-| :-----: | ---------------------------------------------------------- |
-| load    | Checks the load1, load5 and load15 values                  |
-| memory  | Checks the physical installed memory (free and total)      |
-| disk    | Detects and checks all disks (name, status, temperature)   |
-| storage | Detects and checks all disks (free, total, %)              |
+| mode    | description                                                  |
+| :-----: | ------------------------------------------------------------ |
+| load    | Checks the load1, load5 and load15 values                    |
+| memory  | Checks the physical installed memory (free and total)        |
+| disk    | Detects and checks all disks (name, status, temperature)     |
+| storage | Detects and checks all disks (free, total, %)                |
+| update  | Shows the current DSM version and if DSM update is available |
 
 Example ```CheckCommand``` for use with ```icinga2```:
 ```
