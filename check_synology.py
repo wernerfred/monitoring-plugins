@@ -1,5 +1,6 @@
 from pysnmp.hlapi import *
 import argparse
+import sys
 
 AUTHOR = "Frederic Werner"
 VERSION = 1.0
@@ -23,7 +24,6 @@ mode = args.mode
 state = 'OK'
 
 def snmpget(oid):
-
     errorIndication, errorStatus, errorIndex, varBinds = next(
         getCmd(SnmpEngine(),
                UsmUserData(user_name, auth_key, priv_key, authProtocol=usmHMACMD5AuthProtocol, privProtocol=usmAesCfb128Protocol),
@@ -45,12 +45,23 @@ def snmpget(oid):
             print(' = '.join([x.prettyPrint() for x in varBind]))
             return x.prettyPrint()
 
+def exitCode():
+    if state == 'OK':
+        sys.exit(0)
+    if state == 'WARNING':
+        sys.exit(1)
+    if state == 'CRITICAL':
+        sys.exit(2)
+    if state == 'UNKNOWN':
+        sys.exit(3)
+
 if mode == 'load':
     load1 = str(float(snmpget('1.3.6.1.4.1.2021.10.1.5.1'))/100)
     load5 = str(float(snmpget('1.3.6.1.4.1.2021.10.1.5.2'))/100)
     load15 = str(float(snmpget('1.3.6.1.4.1.2021.10.1.5.3'))/100)
 
     print state + ' - load average: %s, %s, %s' % (load1, load5, load15), '| load1=%sc' % load1, 'load5=%sc' % load5, 'load15=%sc' % load15
+    exitCode()
 
 if mode == 'memory':
     memory_total = float(snmpget('1.3.6.1.4.1.2021.4.5.0'))
@@ -58,16 +69,19 @@ if mode == 'memory':
     memory_percent = 100 / memory_total * memory_unused
 
     print state + ' - {:0.1f}% '.format(memory_percent) + 'free ({0:0.1f} MB out of {1:0.1f} MB)'.format((memory_unused / 1024), (memory_total / 1024)), '|memory_total=%dc' % memory_total, 'memory_unused=%dc' % memory_unused , 'memory_percent=%d' % memory_percent + '%'
+    exitCode()
 
 if mode == 'disk':
     maxDisk = 0
+    output = ''
+    perfdata = '|'
     for i in range(0, 64, 1):
         disk = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
         if disk.startswith("No Such Instance"):
             break
         maxDisk = maxDisk + 1
     for i in range(0, maxDisk, 1):
-        disk = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
+        disk_name = snmpget('1.3.6.1.4.1.6574.2.1.1.2.' + str(i))
         disk_status_nr = snmpget('1.3.6.1.4.1.6574.2.1.1.5.' + str(i))
         disk_temp = snmpget('1.3.6.1.4.1.6574.2.1.1.6.' + str(i))
         status_translation = {
@@ -78,11 +92,17 @@ if mode == 'disk':
             '5': "Crashed"
         }
         disk_status = status_translation.get(disk_status_nr)
+        disk_name = disk_name.replace(" ", "")
 
-        #missing perfdata
-        print state + ' - %s: Status: %s, Temperature: %s C' % (disk, disk_status, disk_temp)
+        output += ' - ' + disk_name + ': Status: ' + disk_status + ', Temperature: ' + disk_temp + ' C'
+        perfdata += 'temperature' + disk_name + '=' + disk_temp + 'c '
+        print perfdata
+    print '%s%s %s' % (state, output, perfdata)
+    exitCode()
 
 if mode == 'storage':
+    output = ''
+    perfdata = '|'
     for i in range(1,256,1):
         storage_name = snmpget('1.3.6.1.2.1.25.2.3.1.3.' + str(i))
         if storage_name.startswith("/volume"):
@@ -95,5 +115,7 @@ if mode == 'storage':
             storage_free = int(storage_size - storage_used)
             storage_used_percent = int(storage_used * 100 / storage_size)
 
-            #missing perfdata
-            print state + ' - free space: %s %s GB (%s GB von %s GB belegt, %s' % (storage_name, storage_free, storage_used, storage_size, storage_used_percent) + '%)'
+            output += ' -  free space: ' + storage_name + ' ' + str(storage_free) + ' GB (' + str(storage_used) + ' GB von ' + str(storage_size) + ' GB belegt, ' + str(storage_used_percent) + '%)'
+            perfdata += storage_name + '=' + str(storage_used) + 'c, '
+    print '%s%s %s' % (state, output, perfdata)
+    exitCode()
