@@ -96,7 +96,6 @@ if mode == 'disk':
 
         output += ' - ' + disk_name + ': Status: ' + disk_status + ', Temperature: ' + disk_temp + ' C'
         perfdata += 'temperature' + disk_name + '=' + disk_temp + 'c '
-        print perfdata
     print '%s%s %s' % (state, output, perfdata)
     exitCode()
 
@@ -116,12 +115,13 @@ if mode == 'storage':
             storage_used_percent = int(storage_used * 100 / storage_size)
 
             output += ' -  free space: ' + storage_name + ' ' + str(storage_free) + ' GB (' + str(storage_used) + ' GB von ' + str(storage_size) + ' GB belegt, ' + str(storage_used_percent) + '%)'
-            perfdata += storage_name + '=' + str(storage_used) + 'c, '
+            perfdata += storage_name + '=' + str(storage_used) + 'c '
     print '%s%s %s' % (state, output, perfdata)
     exitCode()
 
 if mode == 'update':
     update_status_nr = snmpget('1.3.6.1.4.1.6574.1.5.4.0')
+    update_dsm_verison = snmpget('1.3.6.1.4.1.6574.1.5.3.0')
     status_translation = {
             '1': "Available",
             '2': "Unavailable",
@@ -130,5 +130,5 @@ if mode == 'update':
             '5': "Others"
         }
     update_status = status_translation.get(update_status_nr)
-    print state + ' - DSM Update: %s' % (update_status), '| DSMupdate=%sc' % update_status
+    print state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr
     exitCode()
