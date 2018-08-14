@@ -10,7 +10,7 @@ parser.add_argument("hostname", help="the hostname", type=str)
 parser.add_argument("username", help="the snmp user name", type=str)
 parser.add_argument("authkey", help="the auth key", type=str)
 parser.add_argument("privkey", help="the priv key", type=str)
-parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage"])
+parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 args = parser.parse_args()
@@ -118,4 +118,17 @@ if mode == 'storage':
             output += ' -  free space: ' + storage_name + ' ' + str(storage_free) + ' GB (' + str(storage_used) + ' GB von ' + str(storage_size) + ' GB belegt, ' + str(storage_used_percent) + '%)'
             perfdata += storage_name + '=' + str(storage_used) + 'c, '
     print '%s%s %s' % (state, output, perfdata)
+    exitCode()
+
+if mode == 'update':
+    update_status_nr = snmpget('1.3.6.1.4.1.6574.1.5.4.0')
+    status_translation = {
+            '1': "Available",
+            '2': "Unavailable",
+            '3': "Connecting",
+            '4': "Disconnected",
+            '5': "Others"
+        }
+    update_status = status_translation.get(update_status_nr)
+    print state + ' - DSM Update: %s' % (update_status), '| DSMupdate=%sc' % update_status
     exitCode()
