@@ -28,17 +28,13 @@ state = "OK"
 
 humidity, temperature = Adafruit_DHT.read_retry(model, gpio)
 
-if wt != None:
-    if wt < temperature:
-        state = "WARNING"
-if wh != None:
-    if wh < humidity:
-        state = "WARNING"
-if ct != None:
-    if ct < temperature:
-        state = "CRITICAL"
-if ch != None:
-    if ch < humidity:
-        state = "CRITICAL"
+if wt and wt < temperature:
+    state = "WARNING"
+if wh and wh < humidity:
+    state = "WARNING"
+if ct and ct < temperature:
+    state = "CRITICAL"
+if ch and ch < humidity:
+    state = "CRITICAL"
 
 print '%s - ' % state + 'Temperature: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity), '| temperature={0:0.1f}c'.format(temperature), 'humidity=%d' % humidity + '%'
