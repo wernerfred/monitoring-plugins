@@ -66,14 +66,14 @@ OK - load average: 1.48, 1.71, 1.74 | load1=1.48c load5=1.71c load15=1.74c
 
 Available modes:
 
-| mode    | description                                                                |
-| :-----: | -------------------------------------------------------------------------- |
-| load    | Checks the load1, load5 and load15 values                                  |
-| memory  | Checks the physical installed memory (free and total)                      |
-| disk    | Detects and checks all disks (name, status, temperature)                   |
-| storage | Detects and checks all disks (free, total, %)                              |
-| update  | Shows the current DSM version and if DSM update is available               |
-| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply |
+| mode    | description                                                                | warning/critical                |
+| :-----: | -------------------------------------------------------------------------- | ------------------------------- |
+| load    | Checks the load1, load5 and load15 values                                  | not implemented yet             |
+| memory  | Checks the physical installed memory (free and total)                      | if less free than w/c in %      |
+| disk    | Detects and checks all disks (name, status, temperature)                   | not implemented yet             |
+| storage | Detects and checks all disks (free, total, %)                              | if more used than w/c in %      |
+| update  | Shows the current DSM version and if DSM update is available               | set w/c to any int this triggers: <br> warning if available and critical <br> if other than un-/available
+| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply | if temp higher than w/c in °C   |
 
 Example ```CheckCommand``` for use with ```icinga2```:
 ```
