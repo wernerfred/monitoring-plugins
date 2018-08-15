@@ -70,6 +70,11 @@ if mode == 'memory':
     memory_unused = float(snmpget('1.3.6.1.4.1.2021.4.6.0'))
     memory_percent = 100 / memory_total * memory_unused
 
+    if warning and warning > int(memory_percent):
+        state = 'WARNING'
+    if critical and critical > int(memory_percent):
+        state = 'CRITICAL'
+
     print state + ' - {:0.1f}% '.format(memory_percent) + 'free ({0:0.1f} MB out of {1:0.1f} MB)'.format((memory_unused / 1024), (memory_total / 1024)), '|memory_total=%dc' % memory_total, 'memory_unused=%dc' % memory_unused , 'memory_percent=%d' % memory_percent + '%'
     exitCode()
 
@@ -115,6 +120,12 @@ if mode == 'storage':
             storage_used = int((int(used) * int(allocation_units)) / 1000000000)
             storage_free = int(storage_size - storage_used)
             storage_used_percent = int(storage_used * 100 / storage_size)
+
+            if warning and warning < int(storage_used_percent):
+                if state != 'CRITICAL':
+                    state = 'WARNING'
+            if critical and critical < int(storage_used_percent):
+                state = 'CRITICAL'
 
             output += ' -  free space: ' + storage_name + ' ' + str(storage_free) + ' GB (' + str(storage_used) + ' GB von ' + str(storage_size) + ' GB belegt, ' + str(storage_used_percent) + '%)'
             perfdata += storage_name + '=' + str(storage_used) + 'c '
