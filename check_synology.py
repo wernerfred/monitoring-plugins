@@ -1,6 +1,7 @@
 from pysnmp.hlapi import *
 import argparse
 import sys
+import math
 
 AUTHOR = "Frederic Werner"
 VERSION = 1.0
@@ -62,6 +63,11 @@ if mode == 'load':
     load5 = str(float(snmpget('1.3.6.1.4.1.2021.10.1.5.2'))/100)
     load15 = str(float(snmpget('1.3.6.1.4.1.2021.10.1.5.3'))/100)
 
+    if warning and warning < int(math.ceil(float(load1))):
+        state = 'WARNING'
+    if critical and critical < int(math.ceil(float(load1))):
+        state = 'CRITICAL'
+
     print state + ' - load average: %s, %s, %s' % (load1, load5, load15), '| load1=%sc' % load1, 'load5=%sc' % load5, 'load15=%sc' % load15
     exitCode()
 
@@ -100,6 +106,12 @@ if mode == 'disk':
         }
         disk_status = status_translation.get(disk_status_nr)
         disk_name = disk_name.replace(" ", "")
+
+        if warning and warning < int(disk_temp):
+            if state != 'CRITICAL':
+                state = 'WARNING'
+        if critical and critical < int(disk_temp) or int(disk_status_nr) == (4 or 5):
+            state = 'CRITICAL'
 
         output += ' - ' + disk_name + ': Status: ' + disk_status + ', Temperature: ' + disk_temp + ' C'
         perfdata += 'temperature' + disk_name + '=' + disk_temp + 'c '
