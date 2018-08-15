@@ -20,6 +20,8 @@ user_name = args.username
 auth_key = args.authkey
 priv_key = args.privkey
 mode = args.mode
+warning = args.w
+critical = args.c
 
 state = 'OK'
 
@@ -129,6 +131,12 @@ if mode == 'update':
             '4': "Disconnected",
             '5': "Others"
         }
+
+    if warning and 1 == int(update_status_nr):
+        state = 'WARNING'
+    if critical and [4|5] == int(update_status_nr):
+        state = 'CRITICAL'
+
     update_status = status_translation.get(update_status_nr)
     print state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr
     exitCode()
@@ -153,4 +161,10 @@ if mode == 'status':
     status_cpu_fan = status_translation.get(status_cpu_fan_nr)
     status_power = status_translation.get(status_power_nr)
 
+    if warning and warning < int(status_temperature):
+        state = 'WARNING'
+    if critical and critical < int(status_temperature):
+        state = 'CRITICAL'
+
     print state + ' - Model: %s, S/N: %s, System Temperature: %s C, System Status: %s, System Fan: %s, CPU Fan: %s, Powersupply : %s' % (status_model, status_serial, status_temperature, status_system, status_system_fan, status_cpu_fan, status_power) + ' | system_temp=%sc' % status_temperature
+    exitCode()
