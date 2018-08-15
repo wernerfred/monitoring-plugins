@@ -10,7 +10,7 @@ parser.add_argument("hostname", help="the hostname", type=str)
 parser.add_argument("username", help="the snmp user name", type=str)
 parser.add_argument("authkey", help="the auth key", type=str)
 parser.add_argument("privkey", help="the priv key", type=str)
-parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update"])
+parser.add_argument("mode", help="the mode", type=str, choices=["load", "memory", "disk", "storage", "update", "status"])
 parser.add_argument("-w", help="warning value for selected mode", type=int)
 parser.add_argument("-c", help="critical value for selected mode", type=int)
 args = parser.parse_args()
@@ -132,3 +132,25 @@ if mode == 'update':
     update_status = status_translation.get(update_status_nr)
     print state + ' - DSM Version: %s, DSM Update: %s' % (update_dsm_verison, update_status), '| DSMupdate=%sc' % update_status_nr
     exitCode()
+
+if mode == 'status':
+    status_model = snmpget('1.3.6.1.4.1.6574.1.5.1.0')
+    status_serial = snmpget('1.3.6.1.4.1.6574.1.5.2.0')
+    status_temperature = snmpget('1.3.6.1.4.1.6574.1.2.0')
+    
+    status_system_nr = snmpget('1.3.6.1.4.1.6574.1.1.0')
+    status_system_fan_nr = snmpget('1.3.6.1.4.1.6574.1.4.1.0')
+    status_cpu_fan_nr = snmpget('1.3.6.1.4.1.6574.1.4.2.0')
+    status_power_nr = snmpget('1.3.6.1.4.1.6574.1.3.0')
+
+    status_translation = {
+            '1': "Normal",
+            '2': "Failed"
+        }
+
+    status_system = status_translation.get(status_system_nr)
+    status_system_fan = status_translation.get(status_system_fan_nr)
+    status_cpu_fan = status_translation.get(status_cpu_fan_nr)
+    status_power = status_translation.get(status_power_nr)
+
+    print state + ' - Model: %s, S/N: %s, System Temperature: %s C, System Status: %s, System Fan: %s, CPU Fan: %s, Powersupply : %s' % (status_model, status_serial, status_temperature, status_system, status_system_fan, status_cpu_fan, status_power) + ' | system_temp=%sc' % status_temperature
