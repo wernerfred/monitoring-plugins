@@ -43,13 +43,14 @@ This check plugin needs ```pysnmp``` to be installed on your system. You can ins
 
 Available modes:
 
-| mode    | description                                                  |
-| :-----: | ------------------------------------------------------------ |
-| load    | Checks the load1, load5 and load15 values                    |
-| memory  | Checks the physical installed memory (free and total)        |
-| disk    | Detects and checks all disks (name, status, temperature)     |
-| storage | Detects and checks all disks (free, total, %)                |
-| update  | Shows the current DSM version and if DSM update is available |
+| mode    | description                                                                |
+| :-----: | -------------------------------------------------------------------------- |
+| load    | Checks the load1, load5 and load15 values                                  |
+| memory  | Checks the physical installed memory (free and total)                      |
+| disk    | Detects and checks all disks (name, status, temperature)                   |
+| storage | Detects and checks all disks (free, total, %)                              |
+| update  | Shows the current DSM version and if DSM update is available               |
+| status  | Shows model, s/n, temp and status of system, fan, cpu fan and power supply |
 
 Example ```CheckCommand``` for use with ```icinga2```:
 ```
