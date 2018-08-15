@@ -12,6 +12,17 @@ This plugin will read the temperature and humidity values from your sensor (dht1
 
 This check plugin needs the adafruit dht library available on: https://github.com/adafruit/Adafruit_Python_DHT.git
 
+Usage:
+```
+> python check_dht.py -h
+usage: check_dht.py [-h] [-wt WT] [-ct CT] [-wh WH] [-ch CH] {11,22,3202} gpio
+```
+Example check:
+```
+> python check_dht.py 22 4 -wt 40 -ch 99
+OK - Temperature: 24.6 C  Humidity: 47.7 % | temperature=24.6c humidity=47%
+```
+
 Example ```CheckCommand``` for use with ```icinga2```:
 ```
 object CheckCommand "check_dht" {
@@ -40,6 +51,18 @@ object CheckCommand "check_dht" {
 This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
 This check plugin needs ```pysnmp``` to be installed on your system. You can install it with: ```pip install pysnmp```
+
+Usage:
+```
+> python check_synology.py -h
+usage: check_synology.py hostname username authkey privkey {mode} [-h] [-w W] [-c C]
+```
+
+Example check:
+```
+> python check_synology.py hostname snmp_user auth_key priv_key load
+OK - load average: 1.48, 1.71, 1.74 | load1=1.48c load5=1.71c load15=1.74c
+```
 
 Available modes:
 
@@ -88,3 +111,4 @@ object CheckCommand "check_synology" {
   }
 }
 ```
+If you want to add a missing check or another value to be added than you can use the [official Synology MIB Guide](https://global.download.synology.com/download/Document/MIBGuide/Synology_DiskStation_MIB_Guide.pdf) as a hint for the right MIBs / OIDs.
