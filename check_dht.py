@@ -28,6 +28,16 @@ state = "OK"
 
 humidity, temperature = Adafruit_DHT.read_retry(model, gpio)
 
+def exitCode():
+    if state == 'OK':
+        sys.exit(0)
+    if state == 'WARNING':
+        sys.exit(1)
+    if state == 'CRITICAL':
+        sys.exit(2)
+    if state == 'UNKNOWN':
+        sys.exit(3)
+
 if wt and wt < temperature:
     state = "WARNING"
 if wh and wh < humidity:
@@ -38,3 +48,4 @@ if ch and ch < humidity:
     state = "CRITICAL"
 
 print '%s - ' % state + 'Temperature: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity), '| temperature={0:0.1f}c'.format(temperature), 'humidity=%d' % humidity + '%'
+exitCode()
