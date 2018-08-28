@@ -4,8 +4,8 @@ In this repository i will get together all check plugins i wrote by myself or i 
 Keep in mind that i am working on, improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my plugins.
 
 ## Table of contents
-- [check_dht.py](#check_dhtpy)
-- [check_synology.py](#check_synologypy)
+- [![check_dht](https://img.shields.io/badge/check__dht-v0.1-green.svg)](#check_dhtpy) 
+- [![check_synology](https://img.shields.io/badge/check__synology-not%20released-lightgrey.svg)](#check_synologypy)
 
 ### check_dht.py
 This plugin will read the temperature and humidity values from your sensor (dht11, dht22, 3202).
