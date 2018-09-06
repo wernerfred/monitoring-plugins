@@ -4,8 +4,8 @@ In this repository i will get together all check plugins i wrote by myself or i 
 Keep in mind that i am working on, improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my plugins.
 
 ## Table of contents
-- [![check_dht](https://img.shields.io/badge/check__dht-v0.1-green.svg)](#check_dhtpy) 
-- [![check_synology](https://img.shields.io/badge/check__synology-not%20released-lightgrey.svg)](#check_synologypy)
+- [![check_dht](https://img.shields.io/badge/check__dht-v.02-green.svg)](#check_dhtpy) 
+- [![check_synology](https://img.shields.io/badge/check__synology-v0.2-green.svg)](#check_synologypy)
 
 ### check_dht.py
 This plugin will read the temperature and humidity values from your sensor (dht11, dht22, 3202).
@@ -46,7 +46,6 @@ object CheckCommand "check_dht" {
 }
 ```
 ### check_synology.py
-**Keep in mind: This plugin is not released yet.**
 
 This plugin uses ```snmpv3``` with ```MD5``` + ```AES``` to check a lot of different values on your Synology DiskStation.
 
