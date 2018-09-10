@@ -1,4 +1,4 @@
-# monitoring-plugins
+# monitoring-plugins [![CodeFactor](https://www.codefactor.io/repository/github/wernerfred/monitoring-plugins/badge)](https://www.codefactor.io/repository/github/wernerfred/monitoring-plugins)
 In this repository i will get together all check plugins i wrote by myself or i found usefull which are not included in the default ```monitoring-plugins``` you can install via ```apt```. All check plugins will return their results in a readable format for tools like nagios or icinga including perfdata for visualization with tools like grafana or pnp. Feel free to modify the scripts to add more functionality but please keep the [Guidelines](https://blog.netways.de/2015/08/07/monitoring-plug-ins-selbst-gemacht/) in mind. If you don't mind please start a pull request once you have finished so others can profit from your work. 
 
 Keep in mind that i am working on, improving and developing new plugins within this repopsitory so check out the [release section](https://github.com/wernerfred/monitoring-plugins/releases) to use only working versions of my plugins.
