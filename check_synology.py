@@ -44,8 +44,8 @@ def snmpget(oid):
                             errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
     else:
         for varBind in varBinds:
-            #answer = (' = '.join([x.prettyPrint() for x in varBind]))
-            print(' = '.join([x.prettyPrint() for x in varBind]))
+            answer = (' = '.join([x.prettyPrint() for x in varBind]))
+            #print(' = '.join([x.prettyPrint() for x in varBind]))
             return x.prettyPrint()
 
 def exitCode():
