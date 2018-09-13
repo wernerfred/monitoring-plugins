@@ -1,0 +1,6 @@
+[submodule "check_dht"]
+	path = check_dht
+	url = https://github.com/wernerfred/check_dht
+[submodule "check_synology"]
+	path = check_synology
+	url = https://github.com/wernerfred/check_synology
