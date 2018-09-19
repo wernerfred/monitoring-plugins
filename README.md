@@ -14,3 +14,6 @@ Please report any issues or suggestions on the "original" repositorys.
 
 - [check_synology](https://github.com/wernerfred/check_synology/):  
  [![Release](https://img.shields.io/github/release/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases) [![Last Commit](https://img.shields.io/github/last-commit/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology) [![CodeFactor](https://www.codefactor.io/repository/github/wernerfred/check_synology/badge)](https://www.codefactor.io/repository/github/wernerfred/check_synology) [![License](https://img.shields.io/github/license/wernerfred/check_synology.svg)](https://github.com/wernerfred/check_synology/releases)
+
+- [check_teamspeak3](https://github.com/seosepa/check-teamspeak3-perf/):  
+ [![Release](https://img.shields.io/github/release/seosepa/check-teamspeak3-perf.svg)](https://github.com/seosepa/check-teamspeak3-perf/releases) [![Last Commit](https://img.shields.io/github/last-commit/seosepa/check-teamspeak3-perf.svg)](https://github.com/seosepa/check-teamspeak3-perf) [![License](https://img.shields.io/github/license/seosepa/check-teamspeak3-perf.svg)](https://github.com/seosepa/check-teamspeak3-perf/releases)
